@@ -9,14 +9,14 @@ namespace Task
         private int _x;
         private int _y;
         private char _symbol;
-        private bool _isAlive;
 
+        public bool IsAlive { get; private set; }
         public Object(int x, int y, char symbol)
         {
             _x = x;
             _y = y;
             _symbol = symbol;
-            _isAlive = true;
+            IsAlive = true;
         }
 
         public void Move(int stepX, int stepY)
@@ -29,23 +29,20 @@ namespace Task
                 _y = 0;
         }
 
-        public bool СollisionСheck(Object o)
+        public bool HaveCollision(Object o)
         {
             return o._x == _x && o._y == _y;
         }
 
         public void Die()
         {
-            _isAlive = false;
+            IsAlive = false;
         }
 
         public void Show()
         {
-            if (_isAlive)
-            {
-                Console.SetCursorPosition(_x, _y);
-                Console.Write(_symbol);
-            }
+            Console.SetCursorPosition(_x, _y);
+            Console.Write(_symbol);
         }
     }
 
@@ -68,14 +65,17 @@ namespace Task
                 {
                     for (int j = i + 1; j < objects.Length; j++)
                     {
-                        if (objects[i].СollisionСheck(objects[j]))
+                        if (objects[i].HaveCollision(objects[j]))
                         {
                             objects[i].Die();
                             objects[j].Die();
                         }
                     }
                     objects[i].Move(random.Next(-1, 1), random.Next(-1, 1));
-                    objects[i].Show();
+                    if (objects[i].IsAlive)
+                    {
+                        objects[i].Show();
+                    }
                 }
             }
         }
