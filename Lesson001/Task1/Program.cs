@@ -8,17 +8,17 @@ namespace Task1
     {
         static void Main(string[] args)
         {
-            SystemUsersCollection users = new SystemUsersCollection(
-                new SystemUser[] {
-                    new SystemUser(1, "User 1", 1000),
-                    new SystemUser(2, "User 2", 2000),
-                    new SystemUser(3, "User 3", 1000),
-                    new SystemUser(4, "User 4", 3000),
-                    new SystemUser(5, "User 5", 8000),
+            Users users = new Users(
+                new User[] {
+                    new User(1, "User 1", 1000),
+                    new User(2, "User 2", 2000),
+                    new User(3, "User 3", 1000),
+                    new User(4, "User 4", 3000),
+                    new User(5, "User 5", 8000),
                 });
 
             Console.WriteLine("Все пользователи системы");
-            foreach (SystemUser su in users.GetUsers())
+            foreach (User su in users.GetUsers())
             {
                 Console.WriteLine($"ID: {su.Id} / Name: {su.Name} / Salary: {su.Salary}");
             }
@@ -26,7 +26,7 @@ namespace Task1
 
             Console.WriteLine("Введите имя пользователя для поиска: ");
             string s = Console.ReadLine();
-            SystemUser user = users.GetUserByName(s);
+            User user = users.GetUserByName(s);
             Console.WriteLine(user == null ? "Пользователь не найден" : $"ID: {user.Id} / Name: {user.Name} / Salary: {user.Salary}");
             Console.WriteLine("----------------------------------------------------------");
 
@@ -37,21 +37,21 @@ namespace Task1
             Console.WriteLine("----------------------------------------------------------");
 
             Console.WriteLine("Пользователи с зарплатой больше 2000");
-            foreach (SystemUser su in users.GetUsersWhithSalaryMore(2000))
+            foreach (User su in users.GetUsersWhithSalaryMore(2000))
             {
                 Console.WriteLine($"ID: {su.Id} / Name: {su.Name} / Salary: {su.Salary}");
             }
             Console.WriteLine("----------------------------------------------------------");
 
             Console.WriteLine("Пользователи с зарплатой меньше 2000");
-            foreach (SystemUser su in users.GetUsersWhithSalaryLess(2000))
+            foreach (User su in users.GetUsersWhithSalaryLess(2000))
             {
                 Console.WriteLine($"ID: {su.Id} / Name: {su.Name} / Salary: {su.Salary}");
             }
             Console.WriteLine("----------------------------------------------------------");
 
             Console.WriteLine("Пользователи с зарплатой больше 1000 и меньше 4000");
-            foreach (SystemUser su in users.GetUsersBySalary(1000, 4000))
+            foreach (User su in users.GetUsersBySalary(1000, 4000))
             {
                 Console.WriteLine($"ID: {su.Id} / Name: {su.Name} / Salary: {su.Salary}");
             }
@@ -61,13 +61,13 @@ namespace Task1
         }
     }
 
-    class SystemUser
+    class User
     {
         public int Id { get; }
         public string Name { get; }
         public decimal Salary { get; }
 
-        public SystemUser(int id, string name, decimal salary)
+        public User(int id, string name, decimal salary)
         {
             Id = id;
             Name = name;
@@ -75,42 +75,42 @@ namespace Task1
         }
     }
 
-    class SystemUsersCollection
+    class Users
     {
-        private SystemUser[] _collection;
+        private User[] _collection;
 
-        public SystemUsersCollection(SystemUser[] systemUser)
+        public Users(User[] usersCollection)
         {
-            _collection = systemUser;
+            _collection = usersCollection;
         }
 
-        public SystemUser GetUserByName(string name)
+        public User GetUserByName(string name)
         {
-            SystemUser result = _collection.FirstOrDefault(u => u.Name == name);
+            User result = _collection.FirstOrDefault(u => u.Name == name);
             return result;
         }
 
-        public SystemUser GetUserById(int id)
+        public User GetUserById(int id)
         {
-            SystemUser result = _collection.FirstOrDefault(u => u.Id == id);
+            User result = _collection.FirstOrDefault(u => u.Id == id);
             return result;
         }
 
-        public IReadOnlyCollection<SystemUser> GetUsers()
+        public IReadOnlyCollection<User> GetUsers()
         {
             return _collection;
         }
 
-        public SystemUser[] GetUsersWhithSalaryLess(decimal salary)
+        public User[] GetUsersWhithSalaryLess(decimal salary)
         {
             return _collection.Where(u => u.Salary < salary).ToArray();
         }
 
-        public SystemUser[] GetUsersWhithSalaryMore(decimal salary)
+        public User[] GetUsersWhithSalaryMore(decimal salary)
         {
             return _collection.Where(u => u.Salary > salary).ToArray();
         }
-        public SystemUser[] GetUsersBySalary(decimal salaryFrom, decimal salaryTo)
+        public User[] GetUsersBySalary(decimal salaryFrom, decimal salaryTo)
         {
             return _collection.Where(u => u.Salary > salaryFrom && u.Salary < salaryTo).ToArray();
         }
