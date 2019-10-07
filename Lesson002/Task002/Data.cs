@@ -22,8 +22,25 @@ namespace Task002
             _accounts.Add(new Account(name, sum));
         }
 
-        public void DoTransaction(Account accFrom, Account accTo, double Sum)
+        public void DoTransaction(string accFromName, string accToName, double Sum)
         {
+            Account accFrom = _accounts.FirstOrDefault(a => a.Name == accFromName);
+            if (accFrom == null)
+            {
+                throw new ArgumentException($"Счет \"{accFromName}\" не существует");
+            }
+
+            Account accTo = _accounts.FirstOrDefault(a => a.Name == accToName);
+            if (accTo == null)
+            {
+                throw new ArgumentException($"Счет \"{accToName}\" не существует");
+            }
+
+            if(accFrom.Amount < Sum)
+            {
+                throw new ArgumentException($"Недостаточно средств на счете отправителе");
+            }
+
             accFrom.Transaction(-Sum);
             accTo.Transaction(Sum);
         }
@@ -39,7 +56,18 @@ namespace Task002
             _accounts.Remove(accToRemove);
         }
 
-        public List<Account> GetAccounts()
+        public double GetAccountAmountByName(string name)
+        {
+            Account acc = _accounts.FirstOrDefault(a => a.Name == name);
+            if (acc == null)
+            {
+                throw new ArgumentException($"Счет \"{name}\" не существует");
+            }
+
+            return acc.Amount;
+        }
+
+        public IReadOnlyList<Account> GetAccounts()
         {
             return _accounts;
         }
